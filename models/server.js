@@ -11,14 +11,14 @@ class Server {
         this.port = process.env.PORT;
         this.usersPath = '/api/users';
 
+        //Database connection
+        this.dbConnection();
 
         //Middlewares
         this.middlewares();
 
         //Routes
         this.routes();
-
-        this.dbConnection();
     }
 
     routes() {
