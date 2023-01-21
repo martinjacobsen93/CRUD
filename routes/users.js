@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/', getUser);
 router.post('/', createUser);
-router.patch('/', modifyUser);
+router.patch('/:id', modifyUser);
 router.delete('/', deleteUser);
 
 

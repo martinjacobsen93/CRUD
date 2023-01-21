@@ -22,12 +22,13 @@ const createUser =  (req, res) => {
 
 };
 
-const modifyUser =  (req, res) => {
+const modifyUser =  (req = request, res) => {
 
-
+    const { id } = req.params;
 
     res.json({
         msg: "Modify user endpoint",
+        id,
     })
 
 };

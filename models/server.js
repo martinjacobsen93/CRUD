@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const connectToDB = require('../database/config');
 
 class Server {
 
@@ -16,6 +17,8 @@ class Server {
 
         //Routes
         this.routes();
+
+        this.dbConnection();
     }
 
     routes() {
@@ -29,6 +32,10 @@ class Server {
         this.app.use(express.static(path.join(__dirname,'..','public')));
 
         // this.app.use(express.json());
+    }
+
+    async dbConnection() {
+        await connectToDB();
     }
 
     listen() {
