@@ -31,7 +31,7 @@ class Server {
         // PUBLIC
         this.app.use(express.static(path.join(__dirname,'..','public')));
 
-        // this.app.use(express.json());
+        this.app.use(express.json());
     }
 
     async dbConnection() {
