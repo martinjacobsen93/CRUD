@@ -38,7 +38,9 @@ const createUser = async (req = request, res = response) => {
 const updateUser = async (req = request, res) => {
 
     const { id } = req.params;
-    const { password, google, ...resto } = req.body;
+    const { _id, password, google, ...resto } = req.body;
+    // TO DO:
+    // Validar que por query venga un ID de mongo válido
 
     // Validar si el usuario quiere modificar la password
     if (password) {
@@ -48,7 +50,7 @@ const updateUser = async (req = request, res) => {
 
     const usuario = await Usuario.findByIdAndUpdate(id, resto)
 
-    res.json({
+    res.status(201).json({
         msg: `User with id ${id} has been updated`
     })
 

@@ -21,7 +21,21 @@ const existeMail = async (correo = '') => {
     };
 }
 
+const esIdValido = async (id = '') => {
+
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {
+        const existeUsuario = await Usuario.findById( id );
+        if ( !existeUsuario ) {
+            throw new Error(`El ID ${ id } no existe`);
+        }
+    } else {
+        throw new Error(`El ID ${ id } no es válido`);
+    }
+
+}
+
 module.exports = {
     existeRol,
     existeMail,
+    esIdValido,
 }

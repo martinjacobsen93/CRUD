@@ -6,7 +6,7 @@ const { getUser,
         updateUser,
         deleteUser } = require('../controllers/users');
 const validarCampos = require('../middlewares/validateFields');
-const { existeRol, existeMail } = require('../helpers/db-Validators');
+const { existeRol, existeMail, esIdValido } = require('../helpers/db-Validators');
 
 const router = Router();
 
@@ -20,7 +20,14 @@ router.post('/createUser',[
     validarCampos
 
 ],createUser);
-router.put('/:id', updateUser);
+router.put('/:id', [
+    check('id').custom(esIdValido),
+    check('nombre','El nombre es un campo obligatorio').notEmpty(),
+    check('correo','El correo no es válido').isEmail(),
+    check('password','El campo password es obligatorio y debe tener al menos 6 caracteres').notEmpty().isLength({min: 6}),
+    check('rol').custom(existeRol),
+    validarCampos
+],updateUser);
 router.delete('/', deleteUser);
 
 
