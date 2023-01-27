@@ -1,5 +1,6 @@
 const { request, response } = require('express');
 const bcryptjs = require('bcryptjs');
+const Usuario = require('../models/usuario');
 
 const getUser =  (req, res) => {
 
@@ -34,13 +35,21 @@ const createUser = async (req = request, res = response) => {
 
 };
 
-const modifyUser =  (req = request, res) => {
+const updateUser = async (req = request, res) => {
 
     const { id } = req.params;
+    const { password, google, ...resto } = req.body;
+
+    // Validar si el usuario quiere modificar la password
+    if (password) {
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const usuario = await Usuario.findByIdAndUpdate(id, resto)
 
     res.json({
-        msg: "Modify user endpoint",
-        id,
+        msg: `User with id ${id} has been updated`
     })
 
 };
@@ -56,6 +65,6 @@ const deleteUser =  (req, res) => {
 module.exports = {
     getUser,
     createUser,
-    modifyUser,
+    updateUser,
     deleteUser,
 }

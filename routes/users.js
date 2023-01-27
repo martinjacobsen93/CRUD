@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const { Router } = require('express');
 const { getUser,
         createUser,
-        modifyUser,
+        updateUser,
         deleteUser } = require('../controllers/users');
 const validarCampos = require('../middlewares/validateFields');
 const { existeRol, existeMail } = require('../helpers/db-Validators');
@@ -20,7 +20,7 @@ router.post('/createUser',[
     validarCampos
 
 ],createUser);
-router.patch('/:id', modifyUser);
+router.put('/:id', updateUser);
 router.delete('/', deleteUser);
 
 

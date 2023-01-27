@@ -30,7 +30,7 @@ class Server {
         this.app.use(cors());
         // PUBLIC
         this.app.use(express.static(path.join(__dirname,'..','public')));
-
+        // Lectura y parseo
         this.app.use(express.json());
     }
 
