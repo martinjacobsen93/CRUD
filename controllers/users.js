@@ -7,7 +7,7 @@ const getUser = async (req, res) => {
     const { limit = 10, offset = 0 } = req.query
 
     const [ totalUsuarios, usuarios] = await Promise.all([
-        Usuario.count({estado: true}),
+        Usuario.countDocuments({estado: true}),
         Usuario.find({estado: true})
         .limit(Number(limit))
         .skip(Number(offset))
@@ -62,11 +62,28 @@ const updateUser = async (req = request, res) => {
 
 };
 
-const deleteUser =  (req, res) => {
+const deleteUser = async (req, res) => {
+
+    const { id } = req.params;
+
+    // TODO: Validar si el estado ya es false, caso sea false indicar que no existe dicho usuario
+
+    // const usuario = Usuario.findById(id);
+
+    // if (!usuario.estado) {
+
+    //     console.log(usuario.schema.obj.estado)
+
+    //     return res.status(400).json({
+    //         msg: `No existe un usuario con el id ${id}`
+    //     });
+    // }
+    const usuario = await Usuario.findByIdAndUpdate(id, {estado: false}, {new: true});
 
     res.json({
-        msg: "User deleted",
-    })
+        msg: `El usuario con ${id} fué eliminado con éxito.`,
+        usuario
+    });
 
 };
 

@@ -28,7 +28,10 @@ router.put('/:id', [
     check('rol').custom(existeRol),
     validarCampos
 ],updateUser);
-router.delete('/', deleteUser);
+router.delete('/:id', [
+    check('id').custom(esIdValido),
+    validarCampos
+], deleteUser);
 
 
 module.exports = router;
