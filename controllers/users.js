@@ -1,5 +1,4 @@
 const { request, response } = require('express');
-const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
 
 const getUser =  (req, res) => {
@@ -19,15 +18,6 @@ const createUser = async (req = request, res = response) => {
 
     const {nombre, correo, password, rol} = req.body
     const usuario = new Usuario({nombre, correo, password, rol});
-
-    // Validar si usuario con email dado ya existe
-    const existeUsuario = await Usuario.findOne({correo});
-
-    if (existeUsuario) {
-        return res.status(400).json({
-            msg: "Ya existe un usuario con este correo, por favor intenta con otro."
-        })
-    }
 
     // Encriptar contraseña
     const salt = bcryptjs.genSaltSync();
