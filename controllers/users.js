@@ -2,14 +2,20 @@ const { request, response } = require('express');
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/usuario');
 
-const getUser =  (req, res) => {
+const getUser = async (req, res) => {
 
-    const {nombre = 'Not found', apellido = 'Not found'} = req.query
+    const { limit = 10, offset = 0 } = req.query
+
+    const [ totalUsuarios, usuarios] = await Promise.all([
+        Usuario.count({estado: true}),
+        Usuario.find({estado: true})
+        .limit(Number(limit))
+        .skip(Number(offset))
+    ])
 
     res.json({
-        msg: "Get user endpoint",
-        nombre,
-        apellido,
+        totalUsuarios,
+        usuarios,
     })
 
 };
