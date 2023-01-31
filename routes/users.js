@@ -2,6 +2,7 @@ const { check } = require('express-validator');
 
 const { Router } = require('express');
 const { getUser,
+        getUsers,
         createUser,
         updateUser,
         deleteUser } = require('../controllers/users');
@@ -10,7 +11,12 @@ const { existeRol, existeMail, esIdValido } = require('../helpers/db-Validators'
 
 const router = Router();
 
-router.get('/', getUser);
+router.get('/:id', [
+    check('id').custom(esIdValido),
+    validarCampos
+], getUser);
+
+router.get('/', getUsers);
 router.post('/createUser',[
     check('nombre','El nombre es un campo obligatorio').notEmpty(),
     check('correo','El correo no es válido').isEmail(),

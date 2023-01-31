@@ -1,8 +1,21 @@
 const { request, response } = require('express');
 const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/usuario');
+const { esUserInactivo } = require('../helpers/db-Validators');
 
-const getUser = async (req, res) => {
+const getUser = async (req = request, res) => {
+
+    const { id } = req.params
+
+    const usuario = await Usuario.findById(id);
+
+    res.json({
+        usuario
+    })
+
+};
+
+const getUsers = async (req, res) => {
 
     const { limit = 10, offset = 0 } = req.query
 
@@ -54,11 +67,12 @@ const updateUser = async (req = request, res) => {
         resto.password = bcryptjs.hashSync(password, salt);
     }
 
-    const usuario = await Usuario.findByIdAndUpdate(id, resto)
+    const usuario = await Usuario.findByIdAndUpdate(id, resto, {new: true})
 
     res.status(201).json({
-        msg: `User with id ${id} has been updated`
-    })
+        msg: `User with id ${id} has been updated`,
+        usuario
+    });
 
 };
 
@@ -68,16 +82,12 @@ const deleteUser = async (req, res) => {
 
     // TODO: Validar si el estado ya es false, caso sea false indicar que no existe dicho usuario
 
-    // const usuario = Usuario.findById(id);
+    const errorMsg = await esUserInactivo(id)
 
-    // if (!usuario.estado) {
+    if (errorMsg) {
+        return res.status(400).json(errorMsg);
+    }
 
-    //     console.log(usuario.schema.obj.estado)
-
-    //     return res.status(400).json({
-    //         msg: `No existe un usuario con el id ${id}`
-    //     });
-    // }
     const usuario = await Usuario.findByIdAndUpdate(id, {estado: false}, {new: true});
 
     res.json({
@@ -89,6 +99,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     getUser,
+    getUsers,
     createUser,
     updateUser,
     deleteUser,

@@ -34,8 +34,21 @@ const esIdValido = async (id = '') => {
 
 }
 
+const esUserInactivo = async (id = '') => {
+
+    const usuario = await Usuario.findById(id);
+
+    if (!usuario.estado) {
+        return {
+            msg: `No existe un usuario con el id ${id}`
+        }
+    }
+
+}
+
 module.exports = {
     existeRol,
     existeMail,
     esIdValido,
+    esUserInactivo,
 }
