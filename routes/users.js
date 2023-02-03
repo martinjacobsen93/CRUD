@@ -8,6 +8,7 @@ const { getUser,
         deleteUser } = require('../controllers/users');
 const validarCampos = require('../middlewares/validateFields');
 const { existeRol, existeMail, esIdValido } = require('../helpers/db-Validators');
+const { validarJWT } = require('../middlewares/validate-jwt');
 
 const router = Router();
 
@@ -35,6 +36,7 @@ router.put('/:id', [
     validarCampos
 ],updateUser);
 router.delete('/:id', [
+    validarJWT,
     check('id').custom(esIdValido),
     validarCampos
 ], deleteUser);

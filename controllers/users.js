@@ -80,13 +80,7 @@ const deleteUser = async (req, res) => {
 
     const { id } = req.params;
 
-    // TODO: Validar si el estado ya es false, caso sea false indicar que no existe dicho usuario
-
-    const errorMsg = await esUserInactivo(id)
-
-    if (errorMsg) {
-        return res.status(400).json(errorMsg);
-    }
+    const uid = req.uid
 
     const usuario = await Usuario.findByIdAndUpdate(id, {estado: false}, {new: true});
 
