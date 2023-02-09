@@ -9,6 +9,7 @@ const { getUser,
 const validarCampos = require('../middlewares/validateFields');
 const { existeRol, existeMail, esIdValido } = require('../helpers/db-Validators');
 const { validarJWT } = require('../middlewares/validate-jwt');
+const { esAdminRole } = require('../middlewares/validateRol');
 
 const router = Router();
 
@@ -37,6 +38,7 @@ router.put('/:id', [
 ],updateUser);
 router.delete('/:id', [
     validarJWT,
+    esAdminRole,
     check('id').custom(esIdValido),
     validarCampos
 ], deleteUser);
