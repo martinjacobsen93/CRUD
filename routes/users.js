@@ -6,10 +6,8 @@ const { getUser,
         createUser,
         updateUser,
         deleteUser } = require('../controllers/users');
-const validarCampos = require('../middlewares/validateFields');
 const { existeRol, existeMail, esIdValido } = require('../helpers/db-Validators');
-const { validarJWT } = require('../middlewares/validate-jwt');
-const { esAdminRole } = require('../middlewares/validateRol');
+const { validarCampos, validarJWT, esAdminRole } = require('../middlewares');
 
 const router = Router();
 
